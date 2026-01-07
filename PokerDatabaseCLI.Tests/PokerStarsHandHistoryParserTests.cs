@@ -1,4 +1,6 @@
 ﻿using NUnit.Framework;
+using PokerDatabaseCLI.HandHistoryParser;
+using System.Linq;
 
 namespace PokerDatabaseCLI.Tests;
 [TestFixture]
@@ -52,7 +54,7 @@ public class PokerStarsHandHistoryParserTests {
     [Test]
     public void
     ParseSingleHandHistory_Debug() {
-        var history = text.ParseSingleHandHistory();
+        var history = text.ParseHandHistory();
 
         history.HandId.Assert(93405882771);
         history.Players.AssertCount(6);
@@ -91,6 +93,10 @@ public class PokerStarsHandHistoryParserTests {
     }
 
     public string text = """
+
+
+
+
 PokerStars Hand #93405882771:  Hold'em No Limit ($0.10/$0.25 USD) - 2013/02/03 1:16:19 EET [2013/02/02 18:16:19 ET]
 Table 'Stobbe III' 6-max Seat #4 is the button
 Seat 1: VakaLuks ($26.87 in chips) 
@@ -129,6 +135,81 @@ Seat 5: RicsiTheKid (small blind) folded before Flop
 Seat 6: angrypaca (big blind) folded on the Turn
 """;
 }
+
+
+[TestFixture]
+[Category("DirectoryTests")]
+public class HandHistoriesFromRealDirectoryTests {
+    [Test]
+    public void ReadHands_FromFixedDirectory_ReturnsEnumerable() {
+        var dir = @"C:\Poker\1";
+        var hands = dir.GetHandHistoriesFromDirectory().ToList();
+        Assert.That(hands.Count, Is.GreaterThan(0), "No hands parsed from directory");
+    }
+
+    [Test]
+    public void ThirdHand_InFirstFile_ParsesExpectedHandIdAndPlayers() {
+        var dir = @"C:\Poker\1";
+        var hands = dir.GetHandHistoriesFromDirectory().ToList();
+        Assert.That(hands.Count, Is.GreaterThanOrEqualTo(3), "Less than 3 hands available");
+        var third = hands[2];
+        Assert.That(third.HandId, Is.EqualTo(251729832844));
+        Assert.That(third.Players.Count, Is.EqualTo(5));
+        var hero = third.Players.First(p => p.DealtCards.Count == 2);
+        Assert.That(hero.Nickname, Is.EqualTo("LamanJohn"));
+        Assert.That(string.Join(" ", hero.DealtCards.Select(c => c.ToString())), Is.EqualTo("6s 6h"));
+        TestContext.WriteLine($"Parsed hand {third.HandId} with {third.Players.Count} players, hero {hero.Nickname} with cards {string.Join(" ", hero.DealtCards.Select(c => c.ToString()))}");
+
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

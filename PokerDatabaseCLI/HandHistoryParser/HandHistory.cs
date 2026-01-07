@@ -14,6 +14,8 @@ HandHistory {
         heroPlayer = Players.First(player => player.DealtCards.Count > 0);
         return true;
     }
+    public override string ToString() =>
+        $"HandId={HandId}, Players={Players.Count}";
 }
 
 public class
@@ -28,6 +30,8 @@ HandHistoryPlayer {
         StackSize = stackSize;
         DealtCards = dealtCards;
     }
+    public override string ToString() =>
+        $"Seat {SeatNumber}: {Nickname} (${StackSize}) cards: {string.Join(' ', DealtCards.Select(c => c.ToString()))}";
 }
 
 

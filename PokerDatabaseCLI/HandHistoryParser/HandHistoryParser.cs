@@ -2,8 +2,24 @@
 
 public static class
 PokerStarsHandHistoryParser {
+    public static IEnumerable<HandHistory>
+    GetHandHistoriesFromDirectory(this string directory) => 
+        directory
+            .VerifyDirectoryExists()
+            .GetAllDirectoryFiles()
+            .WithFileExtension(".txt")
+            .SelectMany(file => file.GetHandHistoriesFromFile());
+    
+    public static IEnumerable<HandHistory>
+    GetHandHistoriesFromFile(this string file) => 
+        file.GetHandHistoriesTextFromFile().Select(text => text.ParseHandHistory());
+        
+  public static IEnumerable<string>
+    GetHandHistoriesTextFromFile(this string filePath) =>
+        filePath.GetAllTextFromFile().GetLines().SplitByEmptyLines();
+
     public static HandHistory
-    ParseSingleHandHistory(this string handHistoryText) {
+    ParseHandHistory(this string handHistoryText) {
         var parser = new FluentParser(handHistoryText);
         var handId = parser.ParseHandId();
         var players = parser.ParsePlayers().ToImmutableList();
@@ -26,6 +42,8 @@ PokerStarsHandHistoryParser {
         if (!parser.TrySkipUntil("PokerStars Hand #"))
             throw new FormatException("Not a valid PokerStars hand history.");
         return parser.Skip("PokerStars Hand #".Length).ReadLong();
+
+       
     }
 
     public static IEnumerable<(int seatNumber, string nickName, double stackSize)>
@@ -87,6 +105,15 @@ PokerStarsHandHistoryParser {
     }
 
     private static string
+    ReadPlayerNick(this FluentParser parser) {
+        parser.VerifyNext(": ").Skip(2).SkipSpaces();
+        var nick = parser.ReadUntil('(').TrimEnd();
+        if (string.IsNullOrEmpty(nick))
+            throw new FormatException("Failed to read player's nickname");
+        return nick;
+    }
+
+    private static string
     ReadHeroCards(this FluentParser parser) =>
         parser.SkipSpaces().VerifyNext("[").Skip(1).ReadUntil(']');
 
@@ -96,17 +123,9 @@ PokerStarsHandHistoryParser {
         return parser.ReadInt();
     }
 
-    private static string
-    ReadPlayerNick(this FluentParser parser) {
-        parser.VerifyNext(": ").Skip(2).SkipSpaces();
-        if (!parser.TryReadWord(out var nickName))
-            throw new FormatException("Failed to read player's nickname");
-        return nickName;
-    }
-
     private static double
     ReadPlayerStack(this FluentParser parser) {
-        parser.SkipSpaces().VerifyNext("($").Skip(2);
+        parser.VerifyNext("(").Skip(1).SkipSpaces().VerifyNext("$").Skip(1);
         return parser.ReadDouble();
     }
 }

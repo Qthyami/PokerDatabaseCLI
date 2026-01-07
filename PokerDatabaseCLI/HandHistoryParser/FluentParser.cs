@@ -16,6 +16,12 @@ public class FluentParser {
 
     public FluentParser(string @string) => String = @string;
 
+    public override string ToString() {
+        var contextLen = Math.Min(40, CharactersLeft);
+        var snippet = contextLen > 0 ? String.Substring(Position, contextLen) : string.Empty;
+        return $"pos={Position}, next=\"{snippet}\"";
+    }
+
     public FluentParser
     SkipOne() {
         _position++;
@@ -30,7 +36,7 @@ public class FluentParser {
 
     public FluentParser
     SkipSpaces() {
-        while (HasCurrent && NextChar == ' ')
+        while (HasCurrent && char.IsWhiteSpace(NextChar))
             SkipOne();
         return this;
     }
@@ -263,7 +269,7 @@ public class FluentParser {
     public FluentParser
     VerifyNext(string @string) {
         if (!Next(@string))
-            throw new InvalidOperationException($"Expecting next=\"{@string.ToString()}\" but was \"{this}\"");
+            throw new InvalidOperationException($"Expecting next=\"{@string}\" but was {this}");
         return this;
     }
 }
@@ -271,7 +277,7 @@ public class FluentParser {
 internal static class
 FluentParserHelperInternal {
     public static bool
-    IsWordCharacter(this char @char) => @char.IsDigit() || @char.IsLetter();
+    IsWordCharacter(this char @char) => @char.IsDigit() || @char.IsLetter() || @char == '_' || @char == '-' || @char == '.';
 
     public static bool
     IsDigit(this char @char) => '0' <= @char && @char <= '9';
