@@ -1,6 +1,4 @@
-﻿
-
-namespace PokerDatabaseCLI.Common;
+﻿namespace PokerDatabaseCLI.Common;
 
 public class
 SymbolAttribute : Attribute {

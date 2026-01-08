@@ -10,6 +10,15 @@ HandHistory {
         HandId = handId;
         Players = players;
     }
+        public HandHistoryPlayer 
+    GetPlayer(string nickname) => 
+        Players.TryGet(player => player.Nickname == nickname, out var result) ? result 
+            : throw new InvalidOperationException($"Player {nickname.Quoted()} not found in hand {HandId.Quoted()}");
+
+    public bool ContainsPlayer(string nickname) => Players.Any(player => player.Nickname == nickname);
+    public IEnumerable<string> PlayerNicknames => Players.Select(player => player.Nickname);
+
+
     public bool TryGetHeroPlayer(out HandHistoryPlayer heroPlayer) {
         heroPlayer = Players.First(player => player.DealtCards.Count > 0);
         return true;

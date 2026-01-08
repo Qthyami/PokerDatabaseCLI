@@ -137,31 +137,6 @@ Seat 6: angrypaca (big blind) folded on the Turn
 }
 
 
-[TestFixture]
-[Category("DirectoryTests")]
-public class HandHistoriesFromRealDirectoryTests {
-    [Test]
-    public void ReadHands_FromFixedDirectory_ReturnsEnumerable() {
-        var dir = @"C:\Poker\1";
-        var hands = dir.GetHandHistoriesFromDirectory().ToList();
-        Assert.That(hands.Count, Is.GreaterThan(0), "No hands parsed from directory");
-    }
-
-    [Test]
-    public void ThirdHand_InFirstFile_ParsesExpectedHandIdAndPlayers() {
-        var dir = @"C:\Poker\1";
-        var hands = dir.GetHandHistoriesFromDirectory().ToList();
-        Assert.That(hands.Count, Is.GreaterThanOrEqualTo(3), "Less than 3 hands available");
-        var third = hands[2];
-        Assert.That(third.HandId, Is.EqualTo(251729832844));
-        Assert.That(third.Players.Count, Is.EqualTo(5));
-        var hero = third.Players.First(p => p.DealtCards.Count == 2);
-        Assert.That(hero.Nickname, Is.EqualTo("LamanJohn"));
-        Assert.That(string.Join(" ", hero.DealtCards.Select(c => c.ToString())), Is.EqualTo("6s 6h"));
-        TestContext.WriteLine($"Parsed hand {third.HandId} with {third.Players.Count} players, hero {hero.Nickname} with cards {string.Join(" ", hero.DealtCards.Select(c => c.ToString()))}");
-
-    }
-}
 
 
 

@@ -13,6 +13,8 @@
   <Using Include="PokerDatabaseCLI.Data" />
   <Using Include="PokerDatabaseCLI.HandHistoryParser" />
   <Using Include="PokerDatabaseCLI.Common" />
+  <Using Include="PokerDatabaseCLI.CLI.Views" />
+
 
 </ItemGroup>
 </Project>
