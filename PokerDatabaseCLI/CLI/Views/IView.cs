@@ -5,5 +5,12 @@ using System.Text;
 namespace PokerDatabaseCLI.CLI.Views;
 
 public interface IView {
-void RunView();
+ViewResult RunView();
+}
+
+public enum ViewResult {
+ Success,
+    Retry,
+    Exit,
+    MainMenu
 }

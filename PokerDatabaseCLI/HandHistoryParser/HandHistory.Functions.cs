@@ -7,11 +7,11 @@ public static class HandHistoryFunctions {
             .SplitWords().Select(card => card.ParseCards());
 
     public static
-    Card ParseCards(this string CardsSting) {
-        if (CardsSting.Length != 2)
-            throw new ArgumentException($"Invalid card string: {CardsSting}");
-        var rank = CardsSting[0].ParseCardRank();
-        var suit = CardsSting[1].ParseSuit();
+    Card ParseCards(this string CardsString) {
+        if (CardsString.Length != 2)
+            throw new ArgumentException($"Invalid card string: {CardsString}");
+        var rank = CardsString[0].ParseCardRank();
+        var suit = CardsString[1].ParseSuit();
         return new Card(rank, suit);
     }
 

@@ -34,9 +34,9 @@ public  class Database {
         return (totalHands, totalPlayers);
     }
 //TODO should to be simplified
-    public IEnumerable<(long HandId, ImmutableList<Card> DealtCards, double StackSize)>
+    public IEnumerable<(long HandId,  HandHistoryPlayer heroLine)>
     GetIdCardsStackOfHero (int requiredHands) {
-        var result= ImmutableList<(long HandId, ImmutableList<Card> DealtCards, double StackSize)>.Empty;
+        var result= ImmutableList<(long HandId, HandHistoryPlayer Hero)>.Empty;
         string heroName = null;
         var databaseOrdered= _handsDatabase.OrderByDescending(hand => hand.HandId);
         var heroHands = databaseOrdered.TakeWhileAccum(hand=>  {
@@ -47,7 +47,7 @@ public  class Database {
             }, requiredHands);
         foreach( var hand in heroHands) {
             hand.TryGetHeroPlayer(out var heroList);
-            result=[..result, (hand.HandId,  heroList.DealtCards, heroList.StackSize)];
+            result=[..result, (hand.HandId,  heroList)];
         }
         return result;
     }

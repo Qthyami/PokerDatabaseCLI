@@ -7,7 +7,5 @@
         StartupView.RunView();
         IView MainView= context.GetMainViewObject();
         MainView.RunView();
-
-
     }
 }

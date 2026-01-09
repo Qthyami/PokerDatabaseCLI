@@ -1,6 +1,8 @@
-﻿using System;
+﻿ using PokerDatabaseCLI.CLI.Views;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using static PokerDatabaseCLI.CLI.Views.LastHandsView;
 
 namespace PokerDatabaseCLI.CLI;
 
