@@ -1,6 +1,6 @@
 ﻿namespace PokerDatabaseCLI.Data;
 
-public class Database {
+public  class Database {
 
     private ImmutableList<HandHistory> _handsDatabase = ImmutableList<HandHistory>.Empty;
     private ImmutableList<long> _deletedHandsIds  = ImmutableList<long>.Empty;
@@ -8,11 +8,14 @@ public class Database {
     //acces to hands
     public ImmutableList<HandHistory> HandsDatabase => _handsDatabase;
     public ImmutableList<long> DeletedHandsIds => _deletedHandsIds;
-
+    
+    public event Action<long>? HandsAdded; //подсказал ИИ как сделать слушатель событий 
     public void
     AddHands( ImmutableList<HandHistory> handsToAdd) {
     _handsDatabase = [.._handsDatabase, ..handsToAdd];
+    HandsAdded?.Invoke(handsToAdd.Count);
     }
+    
     public bool
     DeleteHandById(long handId) {
         var handToDelete = _handsDatabase.FirstOrDefault(hand => hand.HandId == handId);
@@ -25,7 +28,7 @@ public class Database {
     }
 
     public (long totalHands, long totalPlayers)
-    GetOverViewStats() {
+    GetOverviewStats() {
         long totalHands = _handsDatabase.Count;
         long totalPlayers = _handsDatabase.SelectMany(h => h.Players).Distinct().Count();
         return (totalHands, totalPlayers);

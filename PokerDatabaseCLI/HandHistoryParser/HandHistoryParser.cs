@@ -42,9 +42,7 @@ PokerStarsHandHistoryParser {
         if (!parser.TrySkipUntil("PokerStars Hand #"))
             throw new FormatException("Not a valid PokerStars hand history.");
         return parser.Skip("PokerStars Hand #".Length).ReadLong();
-
-       
-    }
+        }
 
     public static IEnumerable<(int seatNumber, string nickName, double stackSize)>
     ParsePlayers(this FluentParser parser) {

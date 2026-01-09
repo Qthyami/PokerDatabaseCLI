@@ -4,5 +4,6 @@ using System.Text;
 
 namespace PokerDatabaseCLI.CLI;
 
-internal class CommandRegistry {
+public static class CommandRegistry {
+
 }

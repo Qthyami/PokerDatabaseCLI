@@ -4,5 +4,5 @@ using System.Text;
 
 namespace PokerDatabaseCLI.Commands;
 
-internal class ShowStatsHandler {
+internal class ShowOverviewStatsHandler {
 }

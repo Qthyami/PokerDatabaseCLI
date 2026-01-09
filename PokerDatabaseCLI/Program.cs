@@ -1,8 +1,13 @@
 ﻿class Program
 {
     static void Main(string[] args) {
-        IView mainView = Factory.GetMainViewObject();
-        mainView.RunView();
-        Console.ReadKey();
+        var database= new Database();
+        var context = new CommandContext(database);
+        IView StartupView = context.GetStartUpViewObject();
+        StartupView.RunView();
+        IView MainView= context.GetMainViewObject();
+        MainView.RunView();
+
+
     }
 }

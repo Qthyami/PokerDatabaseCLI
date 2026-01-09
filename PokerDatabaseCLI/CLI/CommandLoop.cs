@@ -4,5 +4,7 @@ using System.Text;
 
 namespace PokerDatabaseCLI.CLI;
 
-internal class CommandLoop {
+ public class CommandLoop {
+
+
 }

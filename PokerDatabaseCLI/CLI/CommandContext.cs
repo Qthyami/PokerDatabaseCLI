@@ -4,5 +4,9 @@ using System.Text;
 
 namespace PokerDatabaseCLI.CLI;
 
-internal class CommandContext {
+public  class CommandContext {
+    public Database Database { get;}
+    public CommandContext(Database database) {
+    Database = database;
+}
 }
