@@ -9,8 +9,9 @@ ViewResult RunView();
 }
 
 public enum ViewResult {
- Success,
+    Success,
     Retry,
     Exit,
+    StartMenu,
     MainMenu
 }

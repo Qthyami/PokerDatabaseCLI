@@ -9,7 +9,7 @@ public  class Database {
     public ImmutableList<HandHistory> HandsDatabase => _handsDatabase;
     public ImmutableList<long> DeletedHandsIds => _deletedHandsIds;
     
-    public event Action<long>? HandsAdded; //подсказал ИИ как сделать слушатель событий 
+    public event Action<long>? HandsAdded; //слушатель событий 
     public void
     AddHands( ImmutableList<HandHistory> handsToAdd) {
     _handsDatabase = [.._handsDatabase, ..handsToAdd];

@@ -36,8 +36,7 @@ public class MainView : IView {
     public ViewResult
     RunView() {
 
-        while (true) {
-            Console.Clear();
+                   Console.Clear();
             Console.WriteLine(@"Please select an operation:
             1 - Show total hands and players 
             2 - Show hero last 10 hands
@@ -65,8 +64,9 @@ public class MainView : IView {
                     break;
                 case ConsoleKey.Q:
                     return ViewResult.Exit;
-            }
+            
         }
+        return ViewResult.MainMenu;
     }
     private void Pause() {
         Console.WriteLine("\nPress any key to return to the main menu...");
@@ -94,7 +94,7 @@ public class LastHandsView : IView {
     }
     public ViewResult
     RunView() {
-        var result = _context.Database.GetIdCardsStackOfHero(10);
+        var result = _context.Database.GetIdCardsStackOfHeroHandler(10);
         foreach (var (handId, hero) in result) {
             var cards = string.Join(" ", hero.DealtCards.Select(card => card.ToString()));
             Console.WriteLine($"HandId: {handId}, Hero nickname: {hero.Nickname}, Cards: {cards}, StackSize: {hero.StackSize}");
@@ -113,7 +113,7 @@ public class DeleteHandsView : IView {
         Console.WriteLine("Enter Hand ID to delete:");
         var input = Console.ReadLine();
         if (long.TryParse(input, out long handId)) {
-            bool success = _context.Database.DeleteHandById(handId);
+            bool success = _context.Database.DeleteHandByIdHandler(handId);
             if (success) {
                 Console.WriteLine($"Hand {handId} deleted successfully.");
             }
@@ -128,6 +128,8 @@ public class DeleteHandsView : IView {
     }
 }
 }
+
+
 
 
 
