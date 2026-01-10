@@ -33,39 +33,62 @@ public class MainView : IView {
     public MainView(CommandContext context) {
         _context = context;
     }
+    private static readonly string HelpText = @"
+Available commands:
+  showstats                        : Show total hands and players in database
+  ShowLastHands              | -h  : Show last 10 hands of a hero
+  DeleteHand --HandNumber <id> | -n <id>   : Delete a hand by ID
+  Exit                          -q     : Exit the program
+  Help                          : Show this help
+";
     public ViewResult
     RunView() {
 
-                   Console.Clear();
-            Console.WriteLine(@"Please select an operation:
-            1 - Show total hands and players 
-            2 - Show hero last 10 hands
-            3 - Delete hand
-            Q - Exit");
-            ConsoleKey key = Console.ReadKey().Key;
-            switch (key) {
-                case ConsoleKey.D1:
-                    IView OverviewView = _context.GetOverviewViewOblect();
-                    Console.Clear();
-                    OverviewView.RunView();
-                    Pause();
-                    break;
-                case ConsoleKey.D2:
-                    IView LastHandsView = _context.GetLastHandsViewObject();
-                    Console.Clear();
-                    LastHandsView.RunView();
-                    Pause();
-                    break;
-                case ConsoleKey.D3:
-                    IView DeleteHandsView = _context.GetDeleteHandsViewObject();
-                    Console.Clear();
-                    DeleteHandsView.RunView();
-                    Pause();
-                    break;
-                case ConsoleKey.Q:
-                    return ViewResult.Exit;
-            
+        Console.Clear();
+        Console.WriteLine(HelpText);
+        Console.Write("> ");
+
+        var input = Console.ReadLine();
+        if (string.IsNullOrEmpty(input)) {
+            return ViewResult.MainMenu;
         }
+
+        try {
+            return CommandDispatcher.Dispatch(context: _context, input: input);
+            }
+        catch (Exception ex)
+            {
+            Console.WriteLine($"Error: {ex.Message}");
+            Pause();
+            return ViewResult.MainMenu;
+            }
+
+
+
+        //    ConsoleKey key = Console.ReadKey().Key;
+        //    switch (key) {
+        //        case ConsoleKey.D1:
+        //            IView OverviewView = _context.GetOverviewViewOblect();
+        //            Console.Clear();
+        //            OverviewView.RunView();
+        //            Pause();
+        //            break;
+        //        case ConsoleKey.D2:
+        //            IView LastHandsView = _context.GetLastHandsViewObject();
+        //            Console.Clear();
+        //            LastHandsView.RunView();
+        //            Pause();
+        //            break;
+        //        case ConsoleKey.D3:
+        //            IView DeleteHandsView = _context.GetDeleteHandsViewObject();
+        //            Console.Clear();
+        //            DeleteHandsView.RunView();
+        //            Pause();
+        //            break;
+        //        case ConsoleKey.Q:
+        //            return ViewResult.Exit;
+
+        //}
         return ViewResult.MainMenu;
     }
     private void Pause() {

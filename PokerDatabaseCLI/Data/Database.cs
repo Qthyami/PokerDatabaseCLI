@@ -53,11 +53,10 @@ public  class Database {
     }
     public IEnumerable<string>
     GetDeletedHadsNumbers() {
-        foreach( var handId in _deletedHandsIds) {
+        foreach (var handId in _deletedHandsIds) {
             yield return handId.ToString();
         }
-        }
-  
+    }
     
 }
-    
+

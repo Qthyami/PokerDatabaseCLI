@@ -28,8 +28,7 @@ public class DatabaseTests {
         string? heroName = null;
 foreach (var item in result) {
     var handId = item.HandId;
-    var hero = item.heroLine; // <- именно здесь лежат DealtCards и StackSize
-
+    var hero = item.heroLine; 
     if (heroName == null)
         heroName = hero.Nickname;
     else
@@ -42,7 +41,6 @@ foreach (var item in result) {
     TestContext.WriteLine(
         $"HandId: {handId}, Hero: {hero.Nickname}, Cards: {string.Join(",", hero.DealtCards)}, StackSize: {hero.StackSize}");
 }
-
         
         var handIds = result.Select(r => r.HandId).ToList();
         var sorted = handIds.OrderByDescending(x => x).ToList();
