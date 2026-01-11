@@ -176,6 +176,20 @@ public class FluentParser {
         result = string.Empty;
         return false;
     }
+    // Reads a word from terminal, where  word can be entire string, and TryReadWord func does not work
+    public bool TryReadWordFromTerminal(out string result, int offset = 0) {
+    if (!NextCharAt(offset).IsWordCharacter()) {
+        result = string.Empty;
+        return false;
+    }
+    int start = _position + offset;
+    int i = start;
+    while (i < Length && String[i].IsWordCharacter())
+        i++;
+    result = String.Substring(start, i - start);
+    _position = i;
+    return true;
+}
 
     public FluentParser
     SkipUntilNextLine() {

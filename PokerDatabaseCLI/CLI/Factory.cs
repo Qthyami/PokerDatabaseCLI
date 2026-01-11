@@ -20,12 +20,12 @@ GetOverviewViewOblect(this CommandContext context) {
         return new OverviewView(context);
     }
 public static IView
-GetLastHandsViewObject(this CommandContext context) {
-        return new LastHandsView(context);
+GetLastHandsViewObject(this CommandContext context, int countHands) {
+        return new LastHandsView(context, countHands);
     }
 public static IView
-GetDeleteHandsViewObject(this CommandContext context) {
-        return new DeleteHandsView(context);
+GetDeleteHandsViewObject(this CommandContext context, long handId) {
+        return new DeleteHandsView(context, handId);
     }
     
 }

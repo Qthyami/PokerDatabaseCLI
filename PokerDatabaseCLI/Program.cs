@@ -7,6 +7,5 @@ class Program {
         var database = new Database();
         var context = new CommandContext(database);
        context.Run();
-       
     }
 }

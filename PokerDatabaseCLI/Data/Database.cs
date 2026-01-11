@@ -4,18 +4,16 @@ public  class Database {
 
     private ImmutableList<HandHistory> _handsDatabase = ImmutableList<HandHistory>.Empty;
     private ImmutableList<long> _deletedHandsIds  = ImmutableList<long>.Empty;
-
     //acces to hands
     public ImmutableList<HandHistory> HandsDatabase => _handsDatabase;
     public ImmutableList<long> DeletedHandsIds => _deletedHandsIds;
-    
-    public event Action<long>? HandsAdded; //слушатель событий 
-    public void
+    //event listener for adding hands
+    public event Action<long>? HandsAdded; 
+      public void
     AddHands( ImmutableList<HandHistory> handsToAdd) {
     _handsDatabase = [.._handsDatabase, ..handsToAdd];
     HandsAdded?.Invoke(handsToAdd.Count);
     }
-    
     public bool
     DeleteHandById(long handId) {
         var handToDelete = _handsDatabase.FirstOrDefault(hand => hand.HandId == handId);
@@ -26,7 +24,6 @@ public  class Database {
         }
         return false;
     }
-
     public (long totalHands, long totalPlayers)
     GetOverviewStats() {
         long totalHands = _handsDatabase.Count;

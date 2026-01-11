@@ -43,7 +43,7 @@ HandHistoryPlayer {
         $"Seat {SeatNumber}: {Nickname} (${StackSize}) cards: {string.Join(' ', DealtCards.Select(c => c.ToString()))}";
 }
 
-
+  
 
 
 
