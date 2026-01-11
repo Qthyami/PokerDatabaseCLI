@@ -1,4 +1,3 @@
-п»ї
 namespace PokerDatabaseCLI.CLI.Views;
 
 public class StartupView : IView {
@@ -22,9 +21,10 @@ public class StartupView : IView {
             Console.WriteLine("Press any key to continue...");
             Console.ReadKey();
         };
-        _context.Database.AddHandsFromDirectory(path: folderPath);//Р°СЃРёРЅС…СЂРѕРЅРЅР°СЏ Р»РѕРіРёРєР° РЅРµ РЅСѓР¶РЅР° СЏ РґСѓРјР°СЋ
+        _context.Database.AddHandsFromDirectory(path: folderPath);//асинхронная логика не нужна я думаю
         return ViewResult.Success;
     }
+
 }
 
 public class MainView : IView {
@@ -32,16 +32,14 @@ public class MainView : IView {
     public MainView(CommandContext context) {
         _context = context;
     }
-
-    public static void
-    ShowHelp() {
-        Console.WriteLine("Available commands:");
-        Console.WriteLine($"{"ShowStats".PadRight(40)}: Show total hands and players in database");
-        Console.WriteLine($"{"LastHands <number>".PadRight(40)}: Show last <number> hands of a hero");
-        Console.WriteLine($"{"DeleteHand --HandNumber <id> | -n <id>".PadRight(40)}: Delete a hand by ID");
-        Console.WriteLine($"{"Exit | -q".PadRight(40)}: Exit the program");
-    }
-
+public static void ShowHelp()
+{
+    Console.WriteLine("Available commands:");
+    Console.WriteLine($"{ "showstats".PadRight(40) }: Show total hands and players in database");
+    Console.WriteLine($"{ "LastHands <number>".PadRight(40) }: Show last <number> hands of a hero");
+    Console.WriteLine($"{ "DeleteHand --HandNumber <id> | -n <id>".PadRight(40) }: Delete a hand by ID");
+    Console.WriteLine($"{ "Exit | -q".PadRight(40) }: Exit the program");
+ }
     public ViewResult
     RunView() {
 
@@ -73,7 +71,6 @@ public class OverviewView : IView {
     public OverviewView(CommandContext context) {
         _context = context;
     }
-
     public ViewResult
     RunView() {
         var (totalHands, totalPlayers) = _context.Database.GetOverviewStats();
@@ -88,11 +85,11 @@ public class LastHandsView : IView {
 
     public LastHandsView(CommandContext context, int count) {
         _context = context;
-        _count = count;
+        _count= count;
     }
     public ViewResult
     RunView() {
-        var result = _context.Database.GetIdCardsStackOfHeroHandler(_count);
+        var result = _context.Database.GetIdCardsStackOfHeroHandler(requiredHands: _count);
         foreach (var (handId, hero) in result) {
             var cards = string.Join(" ", hero.DealtCards.Select(card => card.ToString()));
             Console.WriteLine($"HandId: {handId}, Hero nickname: {hero.Nickname}, Cards: {cards}, StackSize: {hero.StackSize}");
@@ -100,42 +97,26 @@ public class LastHandsView : IView {
         return ViewResult.Success;
     }
 
-    public class DeleteHandsView : IView {
-        private CommandContext _context { get; }
-        private long _handId;
-        public DeleteHandsView(CommandContext context, long handId) {
-            _context = context;
-            _handId = handId;
-        }
-
-        public ViewResult
-        RunView() {
-            long handIdParsed = _handId;
-            bool success = _context.Database.DeleteHandByIdHandler(handIdParsed);
-            var deletedHandsNumber = _context.Database.DeletedHandsIds.ToList();
-            if (success) {
-                Console.WriteLine($"Hand {handIdParsed} deleted successfully.");
-                Console.WriteLine("Deleted Hands Ids: " + string.Join(", ", deletedHandsNumber));
-            }
-            else {
-                Console.WriteLine($"Hand {handIdParsed} not found.");
-            }
-            return ViewResult.Success;
-        }
+public class DeleteHandsView : IView {
+    private CommandContext _context { get; }
+    private long _handId;
+    public DeleteHandsView(CommandContext context, long handId ) {
+        _context = context;
+        _handId = handId;
+    }
+public ViewResult
+RunView() {
+    long handIdParsed = _handId;
+    bool success = _context.Database.DeleteHandByIdHandler(handId: handIdParsed);
+    var deletedHandsNumber=_context.Database.DeletedHandsIds.ToList();
+    if (success) {
+        Console.WriteLine($"Hand {handIdParsed} deleted successfully.");
+        Console.WriteLine("Deleted Hands Ids: " + string.Join(", ", deletedHandsNumber));
+    }
+    else {
+        Console.WriteLine($"Hand {handIdParsed} not found.");
+    }
+    return ViewResult.Success;
+}
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -22,9 +22,8 @@ public static class CommandLoop {
                 case ViewResult.Exit:
                     return;
             }
-
         }
     }
 }
 
-    
+

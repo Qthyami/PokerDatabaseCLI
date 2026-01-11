@@ -1,9 +1,4 @@
-﻿ using PokerDatabaseCLI.CLI.Views;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using static PokerDatabaseCLI.CLI.Views.LastHandsView;
-
+﻿using static PokerDatabaseCLI.CLI.Views.LastHandsView;
 namespace PokerDatabaseCLI.CLI;
 
 public static class Factory {
@@ -16,7 +11,7 @@ GetMainViewObject(this CommandContext context) {
         return new MainView(context);
     }
 public static IView
-GetOverviewViewOblect(this CommandContext context) {
+GetOverviewViewObject(this CommandContext context) {
         return new OverviewView(context);
     }
 public static IView
@@ -27,5 +22,4 @@ public static IView
 GetDeleteHandsViewObject(this CommandContext context, long handId) {
         return new DeleteHandsView(context, handId);
     }
-    
 }

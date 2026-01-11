@@ -4,12 +4,13 @@ public  class Database {
 
     private ImmutableList<HandHistory> _handsDatabase = ImmutableList<HandHistory>.Empty;
     private ImmutableList<long> _deletedHandsIds  = ImmutableList<long>.Empty;
-    //acces to hands
+    //acces to hands from outside
     public ImmutableList<HandHistory> HandsDatabase => _handsDatabase;
     public ImmutableList<long> DeletedHandsIds => _deletedHandsIds;
     //event listener for adding hands
-    public event Action<long>? HandsAdded; 
-      public void
+    public event Action<long>? HandsAdded;
+    //ФУНКЦИИ ПРИНЯТО РЕШЕНИЕ НЕ ВЫНОСИТЬ, ОНИ ДОЛЖНЫ БЫТЬ ВНУТРИ DATABASE, ПОЭТОМУ ОНИ НЕ EXTENSION
+    public void
     AddHands( ImmutableList<HandHistory> handsToAdd) {
     _handsDatabase = [.._handsDatabase, ..handsToAdd];
     HandsAdded?.Invoke(handsToAdd.Count);
@@ -48,12 +49,6 @@ public  class Database {
         }
         return result;
     }
-    public IEnumerable<string>
-    GetDeletedHadsNumbers() {
-        foreach (var handId in _deletedHandsIds) {
-            yield return handId.ToString();
-        }
-    }
-    
+       
 }
 
