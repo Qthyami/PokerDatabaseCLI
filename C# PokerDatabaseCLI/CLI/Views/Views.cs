@@ -1,14 +1,14 @@
-namespace PokerDatabaseCLI.CLI.Views;
+            namespace PokerDatabaseCLI.CLI.Views;
 
-public class StartupView : IView {
+            public class StartupView : IView {
 
-    private CommandContext _context { get; }
-    public StartupView(CommandContext context) {
-        _context = context;
-    }
-    public ViewResult
-    RunView() {
-        Console.WriteLine("Welcome to Poker Database CLI!");
+                private CommandContext _context { get; }
+                public StartupView(CommandContext context) {
+                    _context = context;
+                }
+                public ViewResult
+                RunView() {
+                    Console.WriteLine("Welcome to Poker Database CLI!");
         Console.WriteLine("Please enter path to hand history folder:");
         var folderPath = Console.ReadLine();
         if (string.IsNullOrEmpty(folderPath) || !Directory.Exists(folderPath)) {
