@@ -35,7 +35,7 @@ public  class Database {
     public IEnumerable<(long HandId,  HandHistoryPlayer heroLine)>
     GetIdCardsStackOfHero (int requiredHands) {
         var result= ImmutableList<(long HandId, HandHistoryPlayer Hero)>.Empty;
-        string heroName = null;
+        string? heroName = null;
         var databaseOrdered= _handsDatabase.OrderByDescending(hand => hand.HandId);
         var heroHands = databaseOrdered.TakeWhileAccum(hand=>  {
             hand.TryGetHeroPlayer(out var heroList);
